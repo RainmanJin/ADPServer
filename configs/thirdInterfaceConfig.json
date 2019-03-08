@@ -1,0 +1,15 @@
+{
+    "crawlerServerConfig": {
+        "host": "http://172.30.6.115:6510",
+        "port": 6510,
+        "beginCrawlerApi":"/api/crawler/subjectPic",
+        "getCrawlerResultApi":"/api/crawler/PicResult"
+    },
+    "algorithmServerConfig":{
+        "host":"http://172.30.144.24:8620",
+        "port":8620,
+        "getTypeApi":"/algorithm/v1/fetchSpecialDealType",
+        "moveToTestApi":"/algorithm/v1/moveToTest",
+        "moveToTrainApi":"/algorithm/v1/moveToTrain"
+    }
+}

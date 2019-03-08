@@ -1,0 +1,87 @@
+{
+  "mysqlLocalConfig": {
+    "host": "127.0.0.1",
+    "user": "root",
+    "password": "123456",
+    "database": "www",
+    "port": 3306,
+    "connectionLimit": 50,
+    "acquireTimeout": 10000,
+    "charset": "utf8",
+    "multipleStatements": true,
+    "connectionTimeout": 40
+  },
+  "mysqlDevConfig": {
+    "host": "127.0.0.1",
+    "user": "root",
+    "password": "123456",
+    "database": "demo",
+    "port": 3306,
+    "connectionLimit": 50,
+    "acquireTimeout": 10000,
+    "charset": "utf8",
+    "multipleStatements": true,
+    "connectionTimeout": 40
+  },
+  "mysqlTestConfig": {
+    "host": "127.0.0.1",
+    "user": "root",
+    "password": "123456",
+    "database": "demo",
+    "port": 3306,
+    "connectionLimit": 50,
+    "acquireTimeout": 10000,
+    "charset": "utf8",
+    "multipleStatements": true,
+    "connectionTimeout": 40
+  },
+  "mysqlProConfig": {
+    "host": "127.0.0.1",
+    "user": "root",
+    "password": "123456",
+    "database": "demo",
+    "port": 3306,
+    "connectionLimit": 50,
+    "acquireTimeout": 10000,
+    "charset": "utf8",
+    "multipleStatements": true,
+    "connectionTimeout": 40
+  },
+  "mongodbLocalConfig": {
+    "uri": "mongodb://localhost:27017/www",
+    "option": {
+      "connectTimeoutMS": 60000
+    }
+  },
+  "mongodbDevDBConfig": {
+    "uri": "mongodb://root:feixunai2018@172.30.144.30:27017/ai_data_db?authSource=admin",
+    "option": {
+      "connectTimeoutMS": 60000
+    }
+  },
+  "mongodbDevConfig": {
+    "uri": "mongodb://root:feixunai2018@172.30.144.30:27017/ai_data_db?authSource=admin",
+    "option": {
+      "connectTimeoutMS": 60000
+    }
+  },
+  "mongodbTestConfig": {
+    "uri": "mongodb://root:feixunai2018@172.30.144.31:27017/ai_data_db?authSource=admin",
+    "option": {
+      "connectTimeoutMS": 60000
+    }
+  },
+  "mongodbProConfig": {
+    "uri": "mongodb://root:123456@127.0.0.1:27017/www?authSource=admin",
+    "option": {
+      "connectTimeoutMS": 60000
+    }
+  },
+  "redisConfig": {
+    "cluster": false,
+    "connect_info": [{
+      "port": 6379,
+      "host": "127.0.0.1"
+    }]
+  }
+}

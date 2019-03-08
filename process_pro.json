@@ -1,0 +1,15 @@
+{
+    "apps": [
+      {
+        "name": "node-backend-pro",
+        "script": "./bin/www",
+        "watch": false,
+        "env": {
+          "NODE_ENV": "production"
+        },
+        "log_date_format": "YYYY-MM-DD HH:mm Z",
+        "error_file":"./logs/pro/err.log",
+        "out_file":"./logs/pro/out.log"
+      }
+    ]
+  }

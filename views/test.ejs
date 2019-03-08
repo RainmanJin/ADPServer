@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, getListDateial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- import Vue.js -->
+    <script src="//vuejs.org/js/vue.min.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+
+    <el-form :inline="true"  class="demo-form-inline">
+
+    <el-form-item label="单位名称">
+      <el-input v-model="searchByUnitName"></el-input>
+    </el-form-item>
+
+    <el-form-item label="更新时间">
+    <el-col :span="11">
+      <el-date-picker type="date" placeholder="选择日期"  style="width: 100%;"></el-date-picker>
+    </el-col>
+    <el-col class="line" :span="2">-</el-col>
+    <el-col :span="11">
+      <el-time-picker type="fixed-time" placeholder="选择时间"  style="width: 100%;"></el-time-picker>
+    </el-col>
+  </el-form-item>
+  
+    <el-form-item>
+      <el-button type="primary" @click="getListDate">查询</el-button>
+    </el-form-item>
+    
+  </el-form>
+
+
+
+    <el-table
+    :data="tableData"
+    style="width: 100%">
+    <el-table-column
+      label="ID"
+      width="280">
+      <template slot-scope="scope">
+        <span style="margin-left: 10px">{{ scope.row._id }}</span>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="单位名称"
+      width="180">
+      <template slot-scope="scope">
+        <el-popover trigger="hover" placement="top">
+          <p>单位名称: {{ scope.row.UnitName }}</p>
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{ scope.row.UnitName }}</el-tag>
+          </div>
+        </el-popover>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="地址"
+      width="180">
+      <template slot-scope="scope">
+        <el-popover trigger="hover" placement="top">
+          <p>地址: {{ scope.row.address }}</p>
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{ scope.row.address }}</el-tag>
+          </div>
+        </el-popover>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="创建时间"
+      width="280">
+      <template slot-scope="scope">
+        <el-popover trigger="hover" placement="top">
+          <p>创建时间: {{ scope.row.createdTime }}</p>
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{scope.row.createdTime }}</el-tag>
+          </div>
+        </el-popover>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="更新时间"
+      width="280">
+      <template slot-scope="scope">
+        <el-popover trigger="hover" placement="top">
+          <p>更新时间: {{ scope.row.updatedTime }}</p>
+          <div slot="reference" class="name-wrapper">
+            <el-tag size="medium">{{ scope.row.updatedTime }}</el-tag>
+          </div>
+        </el-popover>
+      </template>
+    </el-table-column>
+    <el-table-column label="操作">
+      <template slot-scope="scope">
+        <el-button
+          size="mini"
+          @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+        <el-button
+          size="mini"
+          type="danger"
+          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+  <br>
+  <br>
+  <div class="block">
+  <el-pagination
+    @size-change="handleSizeChange"
+    @current-change="handleCurrentChange"
+    :current-page="currPage"
+    :page-sizes="[3,5,10, 20, 30]"
+    :page-size="limit"
+    layout="total, sizes, prev, pager, next, jumper"
+    :total="count">
+  </el-pagination>
+</div>
+  <br>
+  <br>
+  <br>
+
+<el-form :model="validateForm" ref="validateForm" label-width="100px" :inline="true"  class="demo-form-inline">
+  <el-form-item
+    label="单位名称"
+    prop="inputUnitName"
+    :rules="[
+      { required: true, message: '单位名称不能为空'}
+    ]"
+  >
+    <el-input  v-model="validateForm.inputUnitName" auto-complete="off" :inline="true"></el-input>
+  </el-form-item>
+
+  <el-form-item
+  label="模型地址"
+  prop="inputAddress"
+  :rules="[
+    { required: true, message: '模型地址不能为空'}
+  ]"
+>
+  <el-input  v-model="validateForm.inputAddress" auto-complete="off" :inline="true"></el-input>
+</el-form-item>
+
+  <el-form-item>
+    <el-button type="primary" @click="submitForm('validateForm')">新增</el-button>
+  </el-form-item>
+
+</el-form>
+
+
+
+<el-dialog title="编辑训练模型机构" :visible.sync="dialogFormVisible">
+  <el-form>
+    <el-form-item label="单位名称" :label-width="formLabelWidth">
+      <el-input v-model="UnitName" auto-complete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="模型地址" :label-width="formLabelWidth">
+      <el-input v-model="address" auto-complete="off"></el-input>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="editSubmit">确 定</el-button>
+  </div>
+</el-dialog>
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data(){
+            return {
+                tableData: [],
+                dialogTableVisible: false,
+                dialogFormVisible: false,
+                _id:'',
+                UnitName:'',
+                address:'',
+                searchByUnitName:'',
+                formLabelWidth: '120px',
+                validateForm: {
+                    inputUnitName: '',
+                    inputAddress:''
+                },
+                pages:0,
+                currPage:0,
+                limit:3,
+                count:0,
+                sortByUpdateTime:1
+            }
+        },
+        mounted(){
+            this.getListDate();
+        },
+        methods:{
+            getListDate(){
+              axios.get('/pic/manage/v1/modelTrainUnit',{
+                  params: {
+                      UnitName:this.searchByUnitName,
+                      currPage:this.currPage,
+                      pageSize:this.limit,
+                      sortByUpdateTime:this.sortByUpdateTime
+                  }
+              })
+              .then( (response) => {
+                  this.tableData=response.data.data.list;
+                  this.count=response.data.data.count;
+                  console.log(response.data.data.list)
+              });
+            },
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    console.log(valid)
+                    if (valid) {                      
+                        axios.post('/pic/manage/v1/modelTrainUnit/add', {
+                            UnitName : this.validateForm.inputUnitName.toString(),
+                            address : this.validateForm.inputAddress.toString()
+                        })
+                        .then( (response) => {
+                            if(response.data.code==0){
+                                this.dialogFormVisible = false;
+                                this.$message({
+                                    message: '添加成功',
+                                    type: 'success'
+                                });
+                                this.getListDate();
+                            }
+                            
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                    });
+            },
+            handleEdit(index, row) {
+                this.dialogFormVisible = true;
+                this._id = row._id;
+                this.UnitName = row.UnitName;
+                this.address = row.address;               
+            },
+            editSubmit(){
+                axios.post('/pic/manage/v1/modelTrainUnit/edit', {
+                    _id : this._id,
+                    UnitName:this.UnitName,
+                    address:this.address
+                })
+                .then( (response) => {
+                    if(response.data.code==0){
+                        this.dialogFormVisible = false;
+                        this.$message({
+                            message: '修改成功',
+                            type: 'success'
+                        });
+                        this.getListDate();
+                    }
+                })
+            },
+            handleDelete(index, row) {
+                axios.get('/pic/manage/v1/modelTrainUnit/delete', {
+                    params: {
+                        _id : row._id 
+                    }
+                })
+                .then( (response) =>{
+                    if(response.data.code==0){
+                        this.dialogFormVisible = false;
+                        this.$message({
+                            message: '删除成功',
+                            type: 'success'
+                        });
+                        this.getListDate();
+                    }
+                })
+            },
+            handleSizeChange(val){
+                this.limit = val;
+                this.getListDate();
+            },
+            handleCurrentChange(val){
+              this.currPage = val;
+              this.getListDate();
+            }         
+        }
+    })
+</script>
+</html>

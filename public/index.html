@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .list-box{
+            padding:20px;
+        }
+        .list{
+            border-bottom: 1px solid #cccccc;
+            margin-top:20px;
+        }
+    </style>
+    <!-- 生产环境版本，优化了尺寸和速度 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.18.0/axios.js"></script>
+</head>
+<body>
+<div id="app">
+    <button @click="getList">获取数据测试</button>
+    <p v-for="item in list">
+        <button @click="changeItem(item)">{{item}}</button>
+    </p>
+    {{num}}
+</div>
+</body>
+<script>
+
+</script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            list:{},
+            num:""
+        },
+        created:function(){
+            var _this = this;
+            _this.getList(127);
+        },
+        methods: {
+            getList:function (path){
+                var _this = this;
+//                var params =  {
+//                    level : 1,
+//                    name : "食物"
+//                };
+                $.ajax({
+                    url: "/api/pic/manage/v1/getCategory",
+                    type: "get",
+                    dataType:'json',
+                    contentType: 'application/json',
+                    data:{},
+                    success: function (res) {
+                        console.log(res);
+                        _this.list = res.data
+                    },
+                    error: function (res) {
+                        console.log(res)
+                    }
+                })
+            },
+            test: function (num) {
+                var t = num;
+                console.log(t.toString(2));
+                var data = new Array(8);
+                for(var i = 0 ; i < 8 ; i++){
+                    var value = t & 0xff;
+                    console.log("-----START------");
+                    console.log(value);
+                    console.log(value.toString(2));
+                    console.log("------END-----");
+                    t = t>>>8;
+                    data[7 - i] = value ^ 0x3c;
+                    console.log(data[7 - i].toString(2));
+                    if(data[7 - i] > 127){
+                        data[7 - i] = data[7 - i] - 256
+                    }
+                    console.log((data[7 - i]).toString(2));
+                    console.log(data);
+                }
+            },
+            changeItem: function (item) {
+                item.name = '测'
+            }
+        }
+    })
+
+</script>
+</html>

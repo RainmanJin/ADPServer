@@ -1,0 +1,15 @@
+{
+    "apps": [
+      {
+        "name": "node-backend-test",
+        "script": "./bin/www",
+        "watch": false,
+        "env": {
+          "NODE_ENV": "test"
+        },
+        "log_date_format": "YYYY-MM-DD HH:mm Z",
+        "error_file":"./logs/test/err.log", 
+        "out_file":"./logs/test/out.log"
+      }
+    ]
+  }
